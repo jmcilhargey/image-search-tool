@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="main.css">
+        <title>Image Search</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Image Search Tool</h1>
+            <p>By Joe McIlhargey | <a href="https://github.com/jmcilhargey/image-search-tool">GitHub</a></p>
+            <blockquote>
+                <ul>
+                    <li>Entering a search string returns images from Google's API</li>
+                    <li>Searching a URL in the address bar returns a JSON of the images with info</li>
+                    <li>Database also stores recent search info and results can be paginated</li>
+                </ul>
+            </blockquote>
+            <h3>Example Input</h3>
+            <p>NASA Picture of the Day</p>
+            <code>https://image-search-tool.herokuapp.com/NASA Picture of the Day</code><br>
+            <h3>Example Output</h3>
+            <code>{}</code><br>            
+            <form method="post" action="/">
+                <input type="text" class="form-control" name="search" placeholder="Enter a phrase">
+                <button class="btn btn-default" type="submit">Search!</button>
+            </form>
+            <div class="panel panel-default">
+                <div class="panel-heading" id="query">Search Results</div>
+                <div class="panel-body" id="results">
+                    Panel content
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" href="script.js"></script>
+    </body>
+</html>
