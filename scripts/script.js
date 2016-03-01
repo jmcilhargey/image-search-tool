@@ -10,10 +10,19 @@
        var url = window.location.href + "api/" + query;
        
        http.open("GET", url, true);
+       http.send();
        
        http.onload = function() {
-         document.getElementById("results").innerHTML = http.responseText;  
-       };
+            var data = JSON.parse(http.responseText);
+                data.forEach(function(object){
+                    var image = document.createElement("img");
+                    image.setAttribute("class", "col-md-4 thumbnail")
+                    image.setAttribute("src", object.url);
+                    var panel = document.getElementById("results");
+                    panel.appendChild(image);
+                })
+                
+        };
        http.onerror = function() {
          document.getElementById("results").innerHTML = "An error occurred";  
        };

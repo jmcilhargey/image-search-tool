@@ -13,3 +13,8 @@ blockquote,
 code {
     margin: 10px 0;
 }
+
+.panel img {
+    margin: 25px;
+    max-width: 300px;
+}
