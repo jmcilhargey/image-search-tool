@@ -21,13 +21,28 @@
             <p>NASA Picture of the Day</p>
             <code>https://image-search-tool.herokuapp.com/NASA Picture of the Day</code><br>
             <h3>Example Output</h3>
-            <code>{}</code><br>            
+            <code>
+                   {
+                        "type": "image/",
+                        "width": 300,
+                        "height": 300,
+                        "size": 26458,
+                        "url": "https://lh4.ggpht.com/wKrDLLmmxjfRG2-E-k5L5BUuHWpCOe4lWRF7oVs1Gzdn5e5yvr8fj-ORTlBF43U47yI=w300",
+                        "thumbnail": {
+                            "url": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSumjp6e37O_86nc36mlktuWpbFuCI4nkkkocoBCYW3qCOicqdu_KEK-MY",
+                            "width": 116,
+                            "height": 116
+                        }
+                    }
+                <br>...</code><br>            
             <form class="form">
-                <input type="text" class="form-control" name="search" placeholder="Enter a phrase">
-                <button class="btn btn-default" type="button" onclick="newSearch()">Search!</button>
+                <input type="text" class="form-control" name="search" placeholder="Enter a phrase" onkeydown="preventSubmit(this.event)">
+                <button id="search" class="btn btn-default" type="button" onclick="newSearch(this.id)">Search!</button>
+                <button id="nextpage" class="btn btn-default" type="button" onclick="newSearch(this.id)">Next page</button>
+                <button id="nextpage" class="btn btn-default" type="button" onclick="recentSearch()">Recent search</button>
             </form>
             <div class="panel panel-default">
-                <div class="panel-heading" id="query"></div>
+                <div class="panel-heading" id="query">Results:</div>
                 <div class="panel-body">
                     <div class="row" id="results">
                         

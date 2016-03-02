@@ -8,115 +8,58 @@ var client = googleImages("004128940164975221266:ndq9pbvvrx0", "AIzaSyDcH5p0Csu8
 
 var app = express();
 
-app.use("/public", express.static(process.cwd() + "/public"));
-app.use("/scripts", express.static(process.cwd() + "/scripts"));
-
-app.get("/", function(req, res) {
-  res.sendFile(process.cwd() + "/public/index.html");
-});
-
-app.get("/api/:search", function(req, res) {
-  var query = req.params.search;
+mongo.connect("mongodb://localhost:27017/test", function(err,db) {
   
-  client.search(query).then(function(images) {
-    res.json(images);
+  db.createCollection("record", { capped : true, size : 5242880, max : 5000 } );
+  
+  app.use("/public", express.static(process.cwd() + "/public"));
+  app.use("/scripts", express.static(process.cwd() + "/scripts"));
+  
+  app.get("/", function(req, res) {
+    res.sendFile(process.cwd() + "/public/index.html");
+  });
+  
+  app.get("/api/:search", function(req, res) {
+    
+    var query = req.params.search;
+    var date = new Date();
+    var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    db.collection("record").insert(
+      {
+        search : query,
+        date :  month[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
+      }    
+    , function(err, records) {
+      if (err) {throw err; }
+      
+      console.log("Document added!");
+    });
+    
+    client.search(query).then(function(images) {
+      res.json(images);
+    });
+  });
+  
+  app.get("/api/:search/:page", function(req, res) {
+    var query = req.params.search;
+    var num = req.params.page;
+      
+    client.search(query, {page : num} ).then(function(images) {
+      res.json(images);
+    });
+  });
+  
+  app.get("/recent", function(req, res) {
+    db.collection("record").find().limit(20).toArray(function(err, results) {
+      if (err) { throw err; }
+      res.json(results);
+    });
+
+    
   });
 });
 
 app.listen(process.env.PORT, function() {
   console.log("Node listening on port");
 });
-
-/*
-mongo.connect("mongodb://localhost:27017/photoapp", function(err, db) {
-  if (err) {
-    throw new Error("Database didn't connect!");
-  } else {
-    console.log("MongoDB connected!");
-  }
-  
-  app.get("/", function(req, res) {
-    res.sendFile(process.cwd() + "/index.html");
-  });
-  
-  function photoHandler(db) {
-    var photos = db.collection("photos");
-  };
-  
-  function newSearch() {
-    console.log("Ftn ran!");
-    var http = new XMLHttpRequest();
-    var search = document.querySelector("input[name='search']").value;
-    
-    http.onreadystatechange = function() {
-      if (http.readyState === 4 && http.status === 200) {
-        document.getElementById("results").innerHTML = http.responseText;
-      }
-    }
-    
-    http.open("POST", url + "/api/photos", true);
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.send("fname=Henry&lname=Ford");
-  };
-  
-  app.listen(process.env.PORT, function() {
-    console.log("Ready!");
-  });
-  
-});
-
-/*
-(function () {
-    var newSearch = document.querySelector(".btn");
-    var newResults = document.querySelector("#results");
-    var formSearch = document.querySelector("form");
-    var apiUrl = "http://localhost:3000/api/search"
-    
-    function ready(fn) {
-      if (typeof fn !== "function") {
-         return;
-      }
-
-      if (document.readyState === "complete") {
-         return fn();
-      }
-
-      document.addEventListener("DOMContentLoaded", fn, false);
-    }
-  })();
-  
-  newSearch.addEventListener("click", function() {
-    ajaxRequest("POST", apiUrl, displayPhotos);
-  });
-  
-  function displayPhotos(data) {
-    var resultsObject = JSON.parse(data);
-    newResults.innerHTML = resultsObject.url;
-  };
-  
-  function searchHandler(db) {
-    var query = db.collection("search");
-    
-    this.getSearch = function(req, res) {
-      query.find({}, function(err, result) {
-        if (err) {
-          throw err;
-        }
-        if (result) {
-          res.json(result);
-        }
-      });
-    }
-  };
-  
-  function ajaxRequest(method, url, callback) {
-    var xmlHttp = new XMLHttpRequest();
-    
-    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-      callback(xmlHttp.response);
-    }
-    
-    xmlHttp.open(method, url, true);
-    xmlHttp.send();
-  };
-  */

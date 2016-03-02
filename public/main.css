@@ -14,7 +14,31 @@ code {
     margin: 10px 0;
 }
 
+.panel-heading {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.row {
+    -webkit-column-width: 19em;    
+    -moz-column-width: 19em;
+    column-width: 19em;
+    -webkit-column-gap:0;     
+    -moz-column-gap: 0;
+    column-gap: 0;
+}
+
+.col-md-4 {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    width: 100%; 
+}
+
 .panel img {
-    margin: 25px;
-    max-width: 300px;
+    max-width: 350px;
+}
+
+.list-group li {
+    font-size: 16px;
 }
