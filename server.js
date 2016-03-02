@@ -7,8 +7,10 @@ var googleImages = require("google-images");
 var client = googleImages("004128940164975221266:ndq9pbvvrx0", "AIzaSyDcH5p0Csu8q-lQSsxffhNILZuUUiMPpes");
 
 var app = express();
-
-mongo.connect("mongodb://localhost:27017/test", function(err,db) {
+mongodb://jmcilhargey:<dbpassword>@ds059365.mlab.com:59365/joesdb
+mongo.connect(process.env.MONGOLAB_URI, function(err,db) {
+  
+  if (err) { throw err; }
   
   db.createCollection("record", { capped : true, size : 5242880, max : 5000 } );
   
