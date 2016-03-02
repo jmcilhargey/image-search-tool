@@ -7,7 +7,7 @@ var googleImages = require("google-images");
 var client = googleImages("004128940164975221266:ndq9pbvvrx0", "AIzaSyDcH5p0Csu8q-lQSsxffhNILZuUUiMPpes");
 
 var app = express();
-mongodb://jmcilhargey:<dbpassword>@ds059365.mlab.com:59365/joesdb
+
 mongo.connect(process.env.MONGOLAB_URI, function(err,db) {
   
   if (err) { throw err; }
@@ -62,6 +62,6 @@ mongo.connect(process.env.MONGOLAB_URI, function(err,db) {
   });
 });
 
-app.listen(process.env.PORT, function() {
+app.listen(process.env.PORT || 3000, function() {
   console.log("Node listening on port");
 });
